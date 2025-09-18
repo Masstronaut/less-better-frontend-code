@@ -32,11 +32,12 @@ defaults:
 
 :: title ::
 
-## Less but better frontend code
-
 :: content ::
 
+# Less but better frontend code
+
 Allan Deutsch
+
 🦋 [AllanDeutsch.com](https://allandeutsch.com)
 
 ---
@@ -506,6 +507,154 @@ Finally, showModal automatically sets aria-modal="true" for you, which is import
 
 :: title ::
 
+## Error handling
+
+:: content ::
+
+<v-switch>
+
+<template #0>
+
+In JS/TS it's very natural to write this code
+
+</template>
+
+<template #1>
+
+Tooling won't complain, these are _runtime_ errors
+
+</template>
+
+<template #2>
+
+So we wrap them in try/catch blocks
+
+</template>
+
+<template #3>
+
+And handle each of the possible error cases
+
+</template>
+
+</v-switch>
+
+````md magic-move {at:1}
+```ts
+const response = await fetch("example.com/api/json");
+const json = await response.json();
+```
+
+with throw annotations
+
+```ts
+const response = await fetch("example.com/api/json");
+//               ^ throws on network failure
+const json = await response.json();
+//           ^ throws if response isn't valid json
+```
+
+with try/catch
+
+```ts
+try {
+  const response = await fetch("example.com/api/json");
+  const json = await response.json();
+} catch (e) {
+  console.log("Something went wrong:", e);
+}
+```
+
+with error handling
+
+```ts
+try {
+  const response = await fetch("example.com/api/json");
+  const json = await response.json();
+} catch (e) {
+  if (e instanceof TypeError) {
+    // handle fetch error
+  } else if (e instanceof SyntaxError) {
+    // handle json parse error
+  }
+}
+```
+````
+
+<!--
+1. This is really easy JS to write, but it produces code that isn't robust. Who knows why?
+
+2. Both of these functions return a promise that could reject. The tools don't tell us! Even in typescript, the return type doesn't include the possible errors. We find out at runtime, or our users do. Yikes!
+
+3. so we wrap it in a try/catch block. But we don't actually know what went wrong here...
+
+4. So we need to check for all the possible error types and handle them appropriately. Quick show of hands, who does this every single time you fetch json from an endpoint?
+-->
+
+---
+
+:: title ::
+
+## Error handling
+
+### Better results
+
+:: content ::
+
+We can do better!
+
+```ts
+import { result } from "typesafe-ts"; // or neverthrow, effect, etc.
+
+const fetchResult = await result
+  .try_async(() => fetch("example.com/api/json"))
+  .try_async((response) => response.json())
+  .map_err((e): TypeError | SyntaxError => e);
+
+if (fetchResult.is_error()) {
+  fetchResult.error; // TypeError | SyntaxError
+  // handle errors
+} else {
+  fetchResult.value; // unknown
+  // handle success
+}
+```
+
+<!--
+
+Results are a design pattern (remember those from the gang of 4 book?) for encapsulating both ok and error paths in the return type of a function.
+
+unfortunately not standardized
+
+Many people have rolled their own version with a discriminated union and a success boolean, but using a library implementation has some perks
+
+- It can provide a nicer API for wrapping 3rd party function calls
+- They provide operation chaining so you can operate on success or error values
+- typesafe-ts comes with a linter to help you find and replace try/catch blocks and `throw` statements with the result pattern, as well as common throwing functions like fetch and response JSON
+
+-->
+
+---
+
+:: title ::
+
+## typesafe-ts
+
+:: content ::
+
+- NPM: npmjs.com/package/typesafe-ts
+- GitHub: github.com/Masstronaut/typesafe-ts
+
+<!--
+
+Please check it out and give me a star!
+
+-->
+
+---
+
+:: title ::
+
 ## Fin
 
 :: content ::
@@ -513,6 +662,8 @@ Finally, showModal automatically sets aria-modal="true" for you, which is import
 Thanks for being here!
 
 Want to chat? Come find me at the afterparty.
+
+Slides: github.com/Masstronaut/less-better-frontend-code
 
 ---
 
