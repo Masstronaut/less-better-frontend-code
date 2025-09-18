@@ -359,48 +359,99 @@ and of course the dialog element does it for you.
 
 :: content ::
 
-<v-click>set `closedby="any"` </v-click>
-
+<div class="h-1lh mt-10"></div>
 <ModalComparison />
 
+<v-click><div class="mt-10">
+
+```html
+<dialog closedby="any">...</dialog>
+```
+
+</div></v-click>
+
 <!--
+div: I already implemented a closeModal function for the esc key. Reusing it for this is easy.
+
+Dialog: This one is a bit trickier unless you know the magic incantation. (spooky voice) *click* closedby="any"
 -->
 
 ---
 
 :: title ::
 
-## Modal `<dialog>`s
+## Modal dialogs
+
+### Rendering other content inert
 
 :: content ::
 
-| Feature                 | `<dialog>` support                      |
-| ----------------------- | --------------------------------------- |
-| Close button            | BYO element, `onclick={dialog.close()}` |
-| close with `esc`        | ✅ closes most recently opened modal    |
-| close on backdrop click | ✅ `closedby=any` attribute             |
-| Backdrop                | ✅ style with `::backdrop`              |
+<v-clicks>
+
+- `inert` attribute set by `.showModal()`
+- renders all non-dialog content inert
+- prevents page scrolling
+- and doesn't jump the scroll position!
+
+</v-clicks>
+
+<!--
+I think inert was added specifically for the dialog element. It makes all the other content on the page non-interactive and locks the scroll position. This is better than something like hiding the y-axis overflow, because it won't jump the scroll position and doesn't need to be restored.
+-->
 
 ---
 
 :: title ::
 
-## Modal `<dialog>`s
+## Modal dialogs
+
+### Capture focus when opened
 
 :: content ::
 
-| Feature                       | `<dialog>` support                                                                                                       |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Rendering other content inert | ✅ [`inert`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert) set by `.showModal()`  |
-| Set focus when opened         | ✅ `.showModal()` or `autofocus` attribute                                                                               |
-| Trapping focus in dialog      | ✅ [`inert`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert) items aren't focusable |
-| Prevent page scrolling        | ✅ [`inert`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert) items aren't focusable |
+<div class="h-1lh mt-10"></div>
+<ModalComparison />
+
+<v-click><div class="mt-10">
+
+```ts
+let myDialog: HTMLDialogElement = ...;
+myDialog.showModal();
+```
+
+</div></v-click>
+
+<!--
+If you've managed to stay focused during this talk, you've probably noticed that the content of the div modal is _not_ focused. Divs aren't focusable, so the autofocus attribute doesn't help here. To get this right, every single usage of my div modal would need to manually set autofocus on a focusable element inside the modal.
+
+With the dialog element, if you open it with showModal it works. Easy to wrap in the component logic so there's nothing to remember when using it!
+-->
 
 ---
 
 :: title ::
 
-## Modal `<dialog>`s
+## Modal dialogs
+
+### Trapping focus inside the dialog
+
+:: content ::
+
+<ModalComparison />
+
+<!--
+This is the most notoriously difficult parts of rolling your own modal. As you can see, I can tab right out of it and onto the rest of the page. Terrible for anyone using keyboard navigation or screen readers.
+
+The dialog of course works perfectly. It gets this for free since the rest of the page is inert and can't be interacted with.
+-->
+
+---
+
+:: title ::
+
+## Modal dialogs
+
+### Additional built-ins
 
 :: content ::
 
@@ -410,6 +461,10 @@ and of course the dialog element does it for you.
 | Rendering on top            | ✅ special top layer: skip stacking & z-index |
 | aria roles                  | ✅ `aria-modal="true"` set by `.showModal()`  |
 | accessibility tree presence | ✅ Matches open state automatically           |
+
+<!--
+
+-->
 
 ---
 

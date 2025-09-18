@@ -1,5 +1,6 @@
 <template>
   <dialog
+    closedby="any"
     ref="dialogRef"
     class="dialog-element backdrop:bg-black backdrop:bg-opacity-20 backdrop:backdrop-blur-lg rounded-lg shadow-xl"
   >
@@ -13,37 +14,37 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, defineExpose } from 'vue'
+import { ref, defineProps, defineEmits, defineExpose } from "vue";
 
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(["close"]);
 
-const dialogRef = ref()
+const dialogRef = ref();
 
 const showModal = () => {
   if (dialogRef.value) {
-    dialogRef.value.showModal()
+    dialogRef.value.showModal();
   }
-}
+};
 
 const close = () => {
   if (dialogRef.value) {
-    dialogRef.value.close()
+    dialogRef.value.close();
   }
-  emit('close')
-}
+  emit("close");
+};
 
 // Expose methods for parent to call
 defineExpose({
   showModal,
-  close
-})
+  close,
+});
 </script>
 
 <style scoped>

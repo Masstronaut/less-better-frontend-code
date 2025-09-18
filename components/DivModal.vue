@@ -6,7 +6,7 @@
       <div class="modal-header">
         <h1 class="modal-type">&lt;div&gt; modal</h1>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" autofocus>
         <slot />
       </div>
     </div>
