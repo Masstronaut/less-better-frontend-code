@@ -37,7 +37,7 @@ defaults:
 :: content ::
 
 Allan Deutsch
-[AllanDeutsch.com](https://allandeutsch.com)
+🦋 [AllanDeutsch.com](https://allandeutsch.com)
 
 ---
 
@@ -65,58 +65,23 @@ baseline % is for features I'm covering, but may not be the same for other featu
 
 :: title ::
 
-## Live CSS Demo
-
-:: content ::
-
-Try editing the CSS below and see the button update live:
-
-```css {monaco-run}
-.demo-button {
-  background: red;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.2s ease;
-}
-
-.demo-button:hover {
-  background: darkred;
-  transform: scale(1.05);
-}
-```
-
-<button class="demo-button">Click me!</button>
-
----
-
-:: title ::
-
 ## Changing colors
 
 :: content ::
-
-<div style="display: flex; flex-direction: row; justify-content: space-between;">
 
 - opacity
 - lightness/darkness
 - mix colors together
 
-<div v-click>
+<!--
+There are a lot of ways to do this, but I haven't loved any of them.
 
-Lots of tools for color changing
+- css in JS is slow
+- preprocessors require a build step, configs, and dependencies
+- manipulating css directly from JS is not ergonomic
 
-- CSS in JS
-- Preprocessor manipulations
-- JS manipulation
-
-Each with its own drawbacks
-
-</div>
-</div>
+Let's look at a nice alternative...*click* vanilla CSS
+-->
 
 ---
 
@@ -124,17 +89,45 @@ Each with its own drawbacks
 
 ## Changing colors
 
+### Using vanilla CSS
+
 :: content ::
 
-Avoid those drawbacks by using... vanilla CSS
+<v-switch>
+<template #1>
 
-- CSS variables for reusable values <BaselineWidely />
-- `color-mix()` <BaselineNewly />
-- Relative colors <BaselineNewly />
+- CSS variables <BaselineWidely />
 
 ```css
-hsl(from var(--my-color) h s calc(l + 10%) )
+--my-color: hsl(200, 80%, 50%);
 ```
+
+</template>
+
+<template #2>
+
+- `color-mix()` <BaselineNewly />
+
+<ColorMixer />
+</template>
+
+<template #3>
+
+- Relative colors <BaselineNewly />
+
+<RelativeColorDemo />
+
+</template>
+
+</v-switch>
+
+<!--
+You've used variables in JS/TS, and they're just as useful in CSS. if you've ever reused a value, you're gonna love these.
+
+color-mix as the name implies lets you mix two colors. This is my go-to for adjusting opacity, which I change in srgb space.
+
+Relative color syntax makes it easy to shift colors. I find it quite useful for things like active and hover states where I want a darker or lighter variant of a color.
+-->
 
 ---
 
@@ -279,7 +272,7 @@ What about...
 
 Is there another way?
 
-<v-click>The `&lt;dialog&gt;` element!</v-click>
+<v-click><div>The `&lt;dialog&gt;` element! <BaselineWidely /></div></v-click>
 
 <!--
 I don't want to implement all that stuff! Surely there must be another way? *click*
@@ -455,26 +448,59 @@ The dialog of course works perfectly. It gets this for free since the rest of th
 
 :: content ::
 
-| Feature                     | `<dialog>` support                            |
-| --------------------------- | --------------------------------------------- |
-| managing open state         | ✅ `open` attribute + open & close methods    |
-| Rendering on top            | ✅ special top layer: skip stacking & z-index |
-| aria roles                  | ✅ `aria-modal="true"` set by `.showModal()`  |
-| accessibility tree presence | ✅ Matches open state automatically           |
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th><code>&lt;dialog&gt;</code> support</th>
+</tr>
+</thead>
+<tbody>
+<tr v-click>
+<td>Rendering on top</td>
+<td>✅ special top layer: skip stacking & z-index</td>
+</tr>
+<tr v-click>
+<td>managing open state</td>
+<td>✅ <code>open</code> attribute + open & close methods</td>
+</tr>
+<tr v-click>
+<td>accessibility tree presence</td>
+<td>✅ Matches open state automatically</td>
+</tr>
+<tr v-click>
+<td>aria roles</td>
+<td>✅ <code>.showModal()</code> sets <code>aria-modal="true"</code></td>
+</tr>
+</tbody>
+</table>
 
 <!--
+Rendering on top: dialog uses the top layer, which is a special rendering layer on top of everything else.
 
+In most modern frameworks, managing the open state is easy so this may not seem like a big one. Notably, it's important to only open and close it via the methods, and treat the attribute as read-only.
+
+One benefit of the managed open state is that it automatically updates the accessibility tree! If there's no dialog open, there's no dialog in the accessibility tree.
+
+Finally, showModal automatically sets aria-modal="true" for you, which is important for screen readers to know that the rest of the page is inert.
 -->
 
 ---
 
 :: title ::
 
-## Modal `<dialog>`s
+## Modal recap
 
 :: content ::
 
-<DialogDemo />
+<v-clicks>
+
+- ✅ Use the dialog element
+- ✅ Open it with `.showModal()`
+- ✅ set the `closedby="any"` attribute
+- ❌ Don't mutate the `open` attribute directly
+
+</v-clicks>
 
 ---
 
@@ -484,21 +510,27 @@ The dialog of course works perfectly. It gets this for free since the rest of th
 
 :: content ::
 
-Comments, questions, feedback, etc. in the beer room!
+Thanks for being here!
+
+Want to chat? Come find me at the afterparty.
 
 ---
 
-```html
-<dialog closedby="any">
-  <p>Are you sure you want to applaud?</p>
-  <button onclick="this.parent.close()" autofocus>Cancel</button>
-  <button onclick="applaud()">Applaud</button>
-</dialog>
-```
+:: title ::
 
-```css
-dialog ::backdrop {
-  filter: blur(5px);
-  background: hsla(0, 0, 0%, 80%);
-}
-```
+## closing remarks
+
+:: content ::
+
+- Afterparty 6:30 @ Just The Tap. **luma.com/cascadiajs-day-one-afterparty**
+- SeattleJS.com
+
+<!--
+- SeattleJS is hosting the afterparty tonight! We've got a super cool space with fantastic pizza, and it's sponsored by some awesome companies - mux, resend, and warp.
+
+- If you love CascadiaJS and live within driving distance of seattle, come check out SeattleJS! It's a local meetup, totally free, run by mostly the same people as CascadiaJS.
+
+- conf-style meetup
+- katas
+- workshops
+-->

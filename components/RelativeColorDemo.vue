@@ -24,9 +24,9 @@ const hoveredStep = ref<number | null>(null)
           :key="step"
           class="color-block"
           :style="{
-            backgroundColor: `color-mix(in srgb, ${selectedColor} ${step * 10}%, transparent)`
+            backgroundColor: `oklch(from ${selectedColor} calc(l - ${(10 - step) * 0.05}) c h)`
           }"
-          :title="`${step * 10}% opacity`"
+          :title="`${step * 10}% lightness`"
           @mouseenter="hoveredStep = step"
           @mouseleave="hoveredStep = null"
         />
@@ -36,10 +36,10 @@ const hoveredStep = ref<number | null>(null)
       <div class="css-display mt-4">
         <code class="css-code">
           <span v-if="hoveredStep">
-            color-mix(in srgb, {{ selectedColor }} {{ hoveredStep * 10 }}%, transparent)
+            oklch(from {{ selectedColor }} calc(l - {{ ((10 - hoveredStep) * 0.05).toFixed(2) }}) c h)
           </span>
           <span v-else class="placeholder">
-            color-mix(in srgb, {{ selectedColor }} 50%, transparent)
+            oklch(from {{ selectedColor }} calc(l - 0.25) c h)
           </span>
         </code>
       </div>
