@@ -217,6 +217,21 @@ Preprocessor: dealing with them is a hassle and nobody wants another build step.
 
 :: content ::
 
+<!--
+Okay, so modal dialogs. Quick show of hands, who knows what a modal dialog is?
+
+For those of you who don't know, those obnoxious pop-up windows that ask you for your cookie preferences are modal dialogs. And they all suck, none of them offer me chocolate chip cookies.
+
+When I was a kid I always dreamed that one day I'd be able to stand on stage and talk about implementing popups on the internet. *click*
+-->
+
+---
+
+:: title ::
+
+## Modal dialogs
+
+:: content ::
 <v-switch>
 <template #0>
 
@@ -224,7 +239,7 @@ Render a div
 
 - In the middle of the screen
 - On top of everything
-- That can be dismissed predictably
+- That can be closed easily
 
 </template>
 
@@ -235,10 +250,10 @@ What about...
 <div style="display: flex; flex-direction: row; gap: 20px;">
 <ul>
 <li>Close button [x]</li>
-<li>Close with `esc` key</li>
+<li>Close with <kbd>ESC</kbd></li>
 <li>Nested modals</li>
-<li>Close on backdrop click</li>
 <li>Backdrop</li>
+<li>Close on backdrop click</li>
 <li>Rendering other content inert</li>
 <li>Capture focus when opened</li>
 </ul>
@@ -262,10 +277,19 @@ What about...
 
 :: content ::
 
-<div style="display: flex; gap: 20px; justify-content: center;">
-<DivModalDemo />
-<DialogDemo />
-</div>
+Is there another way?
+
+<v-click>The `&lt;dialog&gt;` element!</v-click>
+
+<!--
+I don't want to implement all that stuff! Surely there must be another way? *click*
+
+Let's compare across all those things a modal should do
+
+- a 100 line div modal
+- an 80 line dialog modal
+
+-->
 
 ---
 
@@ -273,11 +297,74 @@ What about...
 
 ## Modal dialogs
 
+### Close with <kbd>ESC</kbd> key
+
 :: content ::
 
-What about.... A better way?
+<ModalComparison />
 
-The `<dialog>` element!
+<!--
+div: easy! I know how to write a keyboard handler. And I've definitely never forgotten to remove an event listener when unmounting a component. Let's see how dialog did
+
+dialog: Has it built in! Even easier.
+-->
+
+---
+
+:: title ::
+
+## Modal dialogs
+
+### Nested modals
+
+:: content ::
+
+<ModalComparison />
+
+<!--
+Nested modals are a great UX pattern and everyone should use them more often.
+
+div: My Modal component is already wired up to close when esc is pressed, so this should work fine.
+
+They're both gone! Probably not what I want from a UX perspective, but as a user who killed two popups with one keypress, I'm happy.
+
+dialog: Wow look at that, it correctly closes only the top modal.
+-->
+
+---
+
+:: title ::
+
+## Modal dialogs
+
+### Backdrop
+
+:: content ::
+
+<ModalComparison />
+
+<!--
+Every frontend dev can probably figure out how to make an element cover the whole screen as a backdrop for their modal. If you're clever you can even do it using the ::before pseudo-element from your modal!
+
+and of course the dialog element does it for you.
+-->
+
+---
+
+:: title ::
+
+## Modal dialogs
+
+### Close on backdrop click
+
+:: content ::
+
+<v-click>set `closedby="any"` </v-click>
+
+<ModalComparison />
+
+<!--
+-->
 
 ---
 

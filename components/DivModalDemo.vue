@@ -1,18 +1,18 @@
 <template>
   <div>
-    <FocusButton @click="openFirstModal">
+    <FocusButton @click="openFirstModal" fullWidth>
       Open Div Modal
     </FocusButton>
 
     <!-- First Modal -->
     <DivModal :isOpen="isFirstOpen" @close="closeFirstModal">
-      <h2>Is this a dialog element?</h2>
-      <div class="thinking-emoji">🤔</div>
+      <h2 class="text-xl mb-4">Is this a dialog element?</h2>
+      <div class="thinking-emoji mb-4">🤔</div>
       <div class="button-group">
-        <FocusButton @click="closeFirstModal" defaultColor="#22c55e">
-          Yes
+        <FocusButton @click="closeFirstModal" defaultColor="#22c55e" fullWidth>
+          go away
         </FocusButton>
-        <FocusButton @click="openSecondModal" defaultColor="#ef4444">
+        <FocusButton @click="openSecondModal" defaultColor="#ef4444" fullWidth>
           No
         </FocusButton>
       </div>
@@ -20,7 +20,7 @@
 
     <!-- Second Modal -->
     <DivModal :isOpen="isSecondOpen" @close="closeSecondModal">
-      <h2>You should use a dialog element</h2>
+      <h2 class="text-xl mb-4">You should use a dialog element</h2>
       <div class="button-group">
         <FocusButton @click="closeSecondModal" defaultColor="#3b82f6">
           Close
@@ -80,13 +80,8 @@ onUnmounted(() => {
 .button-group {
   display: flex;
   gap: 1rem;
-  justify-content: center;
+  width: 100%;
 }
 
 
-h2 {
-  font-size: 1.25rem;
-  margin: 0 0 1rem 0;
-  color: #333;
-}
 </style>

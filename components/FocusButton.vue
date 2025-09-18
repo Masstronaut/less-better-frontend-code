@@ -1,5 +1,5 @@
 <template>
-  <button class="focus-button" :style="{ '--default-color': defaultColor }">
+  <button class="focus-button" :class="{ 'full-width': fullWidth }" :style="{ '--default-color': defaultColor }">
     <slot>Focus me with Tab</slot>
   </button>
 </template>
@@ -9,6 +9,10 @@ const props = defineProps({
   defaultColor: {
     type: String,
     default: '#007bff'
+  },
+  fullWidth: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
@@ -23,6 +27,7 @@ const props = defineProps({
   cursor: pointer;
   font-size: 16px;
   transition: all 0.2s ease;
+  text-wrap: nowrap;
 }
 
 .focus-button:hover {
@@ -37,5 +42,9 @@ const props = defineProps({
 
 .focus-button:active {
   transform: scale(0.98);
+}
+
+.focus-button.full-width {
+  width: 100%;
 }
 </style>
